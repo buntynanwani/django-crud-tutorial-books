@@ -47,6 +47,8 @@ Using **CRUD** patterns makes apps easier to understand, maintain, and expand.
 ---
 💡 **Examples of Web Application Using a CRUD Framework:**
 
+---
+
 - **1.** **WordPress:**  
     - **What is WordPress?**  
       A popular open-source content management system (CMS) used for creating blogs, websites, and online stores.
@@ -60,76 +62,103 @@ Using **CRUD** patterns makes apps easier to understand, maintain, and expand.
         |  Delete | Trash or permanently delete a post        |
 
 
-🛠️ Example: CRUD Workflow in WordPress Admin
-✅ 1. Create
-•	User Action: Click “Add New Post.”
-•	Database Action:
-o	WordPress inserts a new row in the wp_posts table with:
-	post_title
-	post_content
-	post_status (e.g., publish)
-	post_author
-	post_date
-o	Query Example (simplified):
-INSERT INTO wp_posts 
-  (post_title, post_content, post_status, post_author, post_date)
-       VALUES
-  ('My New Post', 'This is the content.', 'publish', 1, NOW());
+🛠️ **Example: CRUD Workflow in WordPress Admin**
+- 1.**Create**
+    - **User Action: Click “Add New Post.”**
+    - **Database Action:**
+        - **WordPress** inserts a new row in the wp_posts table with:
+            - post_title
+            - post_content
+            - post_status (e.g., publish)
+            - post_author
+            - post_date
+    - **Query Example (simplified):**
 
-✅ 2. Read
-•	User Action: Visitor opens the post URL.
-•	Database Action:
-o	WordPress runs a SELECT query to retrieve the post data:
+     **INSERT INTO** wp_posts 
+
+```bash
+(post_title, post_content, post_status, post_author, post_date)
+VALUES
+('My New Post', 'This is the content.', 'publish', 1, NOW());
+```
+
+- 2.**Read**
+    - User Action: Visitor opens the post URL.
+    - Database Action:
+        - WordPress runs a SELECT query to retrieve the post data:
+```bash        
 SELECT * FROM wp_posts
 WHERE ID = 123 AND post_status = 'publish';
-o	Template: WordPress uses single.php or content.php to display the post.
-✅ 3. Update
-•	User Action: Author edits the title or content.
-•	Database Action:
-o	WordPress runs an UPDATE query:
-UPDATE wp_posts
+
+```
+
+Template: WordPress uses single.php or content.php to display the post.
+
+
+
+- 3.**Update**
+    - User Action: Author edits the title or content.
+    - Database Action:
+    - WordPress runs an UPDATE query:
+    - UPDATE wp_posts
+
+```bash    
 SET post_title = 'Updated Title',
 post_content = 'Updated content here.'
 WHERE ID = 123;
+```
 
-✅ 4. Delete
-•	User Action: Author clicks “Move to Trash.”
-•	Database Action:
-o	WordPress updates post_status to trash:
-UPDATE wp_posts 
+- 4.**Delete**
+    - User Action: Author clicks “Move to Trash.”
+    - Database Action:
+        - WordPress updates post_status to trash:
+        - UPDATE wp_posts
+```bash
 SET post_status = 'trash' 
-WHERE ID = 123;
-o	Permanently deleting: WordPress actually deletes the row if you “Empty Trash.”
+WHERE ID = 123;    
+```
 
-🎨 How This Looks in the Admin UI
-•	Create:
-Posts > Add New
-•	Read:
-Posts > All Posts (to view a list) or on the front end.
-•	Update:
-Posts > Edit
-•	Delete:
-Posts > Trash
+Permanently deleting: WordPress actually deletes the row if you “Empty Trash.”
 
+**🎨 How This Looks in the Admin UI**
+**• Create:**  
+Navigate to:  
+`Posts > Add New`
 
+**• Read:**  
+- View all posts:  
+  `Posts > All Posts`
+- Or see them displayed on the front end.
 
-2.	TRALLOR:
-What is TRALLOR?
-	Trello is a popular web-based project management application that uses a board and card system to help you organize tasks visually.
-How it uses CRUD:?
-Operation	What Happens
-Create	Add a new card to a list (e.g., “Write project proposal”)
-Read	View card details: title, description, comments, due date
-Update	Edit card title, move it to another list, add labels
-Delete	Archive or permanently delete the card
+**• Update:**  
+Navigate to:  
+`Posts > Edit`
 
+**• Delete:**  
+Navigate to:  
+`Posts > Trash`
 
+✅ Enjoy managing your posts easily through the Admin interface!
 
-✅ Quick List of Other Real Examples:
-•	GitHub: CRUD operations on repositories, issues, pull requests.
-•	Shopify Admin: Manage products, orders, customers.
-•	Firebase Firestore Console: Create/read/update/delete documents in NoSQL collections.
-•	Django Admin Panel: Create(addbook)/ Read(List books)/Update(Edit book details)/ Delete(Remove books)
+---
+
+- **2.** **TRALLOR:**  
+    - **What is TRALLOR?**
+        - Trello is a popular web-based project management application that uses a board and card system to help you organize tasks visually.
+    - **How it uses CRUD:?**
+
+        | **Operation** | **What Happens**                                                                 |
+        |---------------|-----------------------------------------------------------------------------------|
+        | Create        | Add a new card to a list (e.g., “Write project proposal”)                       |
+        | Read          | View card details: title, description, comments, due date                       |
+        | Update        | Edit card title, move it to another list, add labels                            |
+        | Delete        | Archive or permanently delete the card                                          |
+
+    - Quick List of Other Real Examples:
+        - GitHub: CRUD operations on repositories, issues, pull requests.
+        - Shopify Admin: Manage products, orders, customers.
+        - Firebase Firestore Console: Create/read/update/delete documents in NoSQL collections.
+        - Django Admin Panel: Create(addbook)/ Read(List books)/Update(Edit book details)/ Delete(Remove books)
 
 What are Architectural Patterns in Software Development?
 Architectural patterns are high-level solutions to recurring design problems in software architecture.
