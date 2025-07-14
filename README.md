@@ -62,7 +62,7 @@ Using **CRUD** patterns makes apps easier to understand, maintain, and expand.
         |  Delete | Trash or permanently delete a post        |
 
 
-🛠️ **Example: CRUD Workflow in WordPress Admin**
+## 🛠️ **Example: CRUD Workflow in WordPress Admin**
 - 1.**Create**
     - **User Action: Click “Add New Post.”**
     - **Database Action:**
@@ -142,101 +142,138 @@ Navigate to:
 
 ---
 
-- **2.** **TRALLOR:**  
-    - **What is TRALLOR?**
-        - Trello is a popular web-based project management application that uses a board and card system to help you organize tasks visually.
-    - **How it uses CRUD:?**
+## - **2.** **TRALLOR:**  <br>
 
-        | **Operation** | **What Happens**                                                                 |
-        |---------------|-----------------------------------------------------------------------------------|
-        | Create        | Add a new card to a list (e.g., “Write project proposal”)                       |
-        | Read          | View card details: title, description, comments, due date                       |
-        | Update        | Edit card title, move it to another list, add labels                            |
-        | Delete        | Archive or permanently delete the card                                          |
+**What is TRALLOR?** <br>
+- Trello is a popular web-based project management application that uses a board and card system to help you organize tasks visually.
+- **How it uses CRUD:?**
 
-    - Quick List of Other Real Examples:
-        - GitHub: CRUD operations on repositories, issues, pull requests.
-        - Shopify Admin: Manage products, orders, customers.
-        - Firebase Firestore Console: Create/read/update/delete documents in NoSQL collections.
-        - Django Admin Panel: Create(addbook)/ Read(List books)/Update(Edit book details)/ Delete(Remove books)
+| **Operation** | **What Happens**                                                                 |
+|---------------|-----------------------------------------------------------------------------------|
+| Create        | Add a new card to a list (e.g., “Write project proposal”)                       |
+| Read          | View card details: title, description, comments, due date                       |
+| Update        | Edit card title, move it to another list, add labels                            |
+| Delete        | Archive or permanently delete the card                                          |
 
-What are Architectural Patterns in Software Development?
+- Quick List of Other Real Examples:
+    - GitHub: CRUD operations on repositories, issues, pull requests.
+    - Shopify Admin: Manage products, orders, customers.
+    - Firebase Firestore Console: Create/read/update/delete documents in NoSQL collections.
+    - Django Admin Panel: Create(addbook)/ Read(List books)/Update(Edit book details)/ Delete(Remove books)
+
+---
+
+## What are Architectural Patterns in Software Development?
 Architectural patterns are high-level solutions to recurring design problems in software architecture.
-They provide blueprints for:
-•	Organizing code
-•	Managing dependencies
-•	Separating concerns
-Some common architectural patterns are:
-•	MVC (Model–View–Controller)
-•	MVT (Model–View–Template)
-•	MVVM (Model–View–ViewModel)
-•	Layered Architecture
-•	Microservices
-These patterns help:
-	 Make code more maintainable
-	 Enable team collaboration
-	 Simplify testing and scaling
 
+**They provide blueprints for:**
+- Organizing code
+- Managing dependencies
+- Separating concerns
 
-What is the MVC (Model–View–Controller) Pattern?
-MVC splits an application into three components:
-1.	Model
-o	Manages the data and business logic
-o	Example: database models, validation rules
-2.	View
-o	Responsible for presentation/UI
-o	Example: HTML templates, frontend rendering
-3.	Controller
-o	Handles user input and requests
-o	Coordinates between Model and View
-o	Example: deciding what data to fetch and which template to render
-🔹 Flow Example:
-•	User submits a form (request) → Controller processes it → Model updates data → Controller selects View → View renders response
+**Some common architectural patterns are:**
+- MVC (Model–View–Controller)
+- MVT (Model–View–Template)
+- MVVM (Model–View–ViewModel)
+- Layered Architecture
+- Microservices
 
- What is the MVT (Model–View–Template) Pattern?
+**These patterns help:**  
+✅ Make code more maintainable<br>
+✅ Enable team collaboration<br>
+✅ Simplify testing and scaling<br>
+
+---
+
+# What is the MVC (Model–View–Controller) Pattern?
+
+MVC splits an application into three components: <br>
+- 1.Model <br>
+    - Manages the data and business logic
+    - Example: database models, validation rules
+
+- 2.View <br>
+    - Responsible for presentation/UI
+    - Example: HTML templates, frontend rendering
+
+- 3.Controller <br>
+    - Handles user input and requests
+    - Coordinates between Model and View
+    - Example: deciding what data to fetch and which template to render
+
+**🔹 Flow Example:** <br>
+- User submits a form (request) → Controller processes it → Model updates data → Controller selects View → View renders response
+
+---
+
+ ## What is the MVT (Model–View–Template) Pattern?
 MVT is Django’s adaptation of MVC:
-1.	Model
-o	Same as in MVC—handles data (Django ORM models)
-2.	View
-o	In Django, the View is the function or class that receives the HTTP request and returns a response.
-o	It contains the control logic (combines what MVC calls the Controller)
-3.	Template
-o	The presentation layer (HTML templates with placeholders)
-🔹 Flow Example in Django:
-•	User requests URL → Django View function executes → Queries Model → Passes data to Template → Renders HTML response
+1.	Model <br>
+    - Same as in MVC—handles data (Django ORM models)
+2.	View <br>
+    - In Django, the View is the function or class that receives the HTTP request and returns a response.
+    - It contains the control logic (combines what MVC calls the Controller)
+3.	Template <br>
+    - The presentation layer (HTML templates with placeholders)
 
-Differences Between MVC and MVT
-MVC	MVT (Django)
-Controller handles input	Django View handles input (acts like Controller)
-View is the UI layer	Template is the UI layer
-Model manages data	Model manages data
-More explicit separation of Controller	Django merges View and Controller into a single “View”
 
-Put simply:
-•	In MVC: View = UI, Controller = logic
-•	In MVT: Template = UI, View = logic
+**🔹 Flow Example in Django:**
+- User requests URL → Django View function executes → Queries Model → Passes data to Template → Renders HTML response
+---
 
-Which of these patterns does Django use?
-Django uses MVT (Model–View–Template).
+## Differences Between MVC and MVT
+| **MVC**                                | **MVT (Django)**                                                       |
+|----------------------------------------|------------------------------------------------------------------------|
+| Controller handles input               | Django View handles input (acts like Controller)                       |
+| View is the UI layer                   | Template is the UI layer                                               |
+| Model manages data                     | Model manages data                                                     |
+| More explicit separation of Controller | Django merges View and Controller into a single “View”                |
+
+
+
+**Put simply:**
+- In MVC: **View = UI, Controller = logic**
+- In MVT: **Template = UI, View = logic**
+
+**Which of these patterns does Django use?** <br>
+Django uses MVT (Model–View–Template).<br>
 Django’s View combines what MVC calls “Controller,” and the Template handles presentation.
 
-How is a project structured in Django?
-A Django project has a project folder (the overall configuration) and one or more apps (modular units).
-Example Structure:
-myproject/
-    manage.py
-    myproject/
-        settings.py
-        urls.py
-        wsgi.py
-    myapp/
-        models.py
-        views.py
-        urls.py
-        templates/
-        static/
+---
 
-Roles of Models, Views, Templates, and URLs
+## How is a project structured in Django?
+A Django project has a project folder (the overall configuration) and one or more apps (modular units).
+
+**Example Structure:**
+
+```plaintext
+myproject/
+├── manage.py
+├── myproject/ # Project settings package
+│ ├── init.py
+│ ├── settings.py
+│ ├── urls.py
+│ ├── wsgi.py
+│ └── asgi.py
+├── app1/ # Your first app
+│ ├── migrations/
+│ │ └── init.py
+│ ├── init.py
+│ ├── admin.py
+│ ├── apps.py
+│ ├── models.py
+│ ├── tests.py
+│ └── views.py
+├── app2/ # Another app
+│ └── ...
+├── templates/ # Project-wide templates
+│ └── ...
+├── static/ # Static files (CSS, JS, images)
+│ └── ...
+└── requirements.txt # Project dependencies
+```
+---
+## Roles of Models, Views, Templates, and URLs
 
 Part	What It Does
 Models	Define data structure and business logic (database tables)
