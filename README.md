@@ -275,109 +275,146 @@ myproject/
 ---
 ## Roles of Models, Views, Templates, and URLs
 
-Part	What It Does
-Models	Define data structure and business logic (database tables)
-Views	Handle requests, process data, and return HTTP responses
-Templates	Render HTML with dynamic content to display to users
-URLs	Map URLs to view functions so Django knows which code to run
+| **Part**     | **What It Does**                                                                 |
+|--------------|-----------------------------------------------------------------------------------|
+| Models       | Define data structure and business logic (database tables)                       |
+| Views        | Handle requests, process data, and return HTTP responses                         |
+| Templates    | Render HTML with dynamic content to display to users                             |
+| URLs         | Map URLs to view functions so Django knows which code to run                     |
 
-Quick Overview of Each
-1. Models (models.py)
-•	Define what your data looks like.
-•	Example:
+**Quick Overview of Each**
+
+1. **Models (models.py)**
+- Define what your data looks like.
+- Example:
+```bash
 class Article(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
+```
 
-2. Views (views.py)
-•	Receive a request and return a response.
-•	Example:
+2. **Views (views.py)**
+- Receive a request and return a response.
+- Example:
+```bash
 def article_list(request):
     articles = Article.objects.all()
     return render(request, 'article_list.html', {'articles': articles})
+```
 
-3. Templates (templates/)
-•	HTML files with Django Template Language to display data.
-•	Example:
+3. **Templates (templates/)**
+- HTML files with Django Template Language to display data.
+- Example:
+```bash
 <h1>Articles</h1>
 <ul>
     {% for article in articles %}
         <li>{{ article.title }}</li>
     {% endfor %}
 </ul>
+```
 
-4. URLs (urls.py)
-•	Connect URLs to views.
-•	Example:
+4. **URLs (urls.py)**
+- Connect URLs to views.
+- Example:
+```bash
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('', views.article_list, name='article_list'),
 ]
+```
+---
 
-What is the %% sign used for in templates?
-Careful:
-In Django templates, you don’t typically use %%.
+## What is the %% sign used for in templates?
+
+**Careful:**
+
+In Django templates, you don’t typically use %%. <br>
+
 You use:
-•	{% ... %} for template tags (logic like loops, conditions)
-•	{{ ... }} for variable output
-Examples:
-Template tag:
+- {% ... %} for template tags (logic like loops, conditions)
+- {{ ... }} for variable output
+
+**Examples:**
+- Template tag:
+```bash
 {% for article in articles %}
-Variable output:
+```
+
+**Variable output:**
+```bash
 {{ article.title }}
-🔍 When you see %%, it usually has one of these reasons:
-•	Escaping a single % in string formatting:
-o	In Python string formatting, %% means a literal %.
-o	Example:
-	"Progress: 50%% complete"
-o	Output:
-	Progress: 50% complete
-•	In Django templates: You rarely need %%.
-•	You would just write % in your HTML if needed.
-•	Example:
+```
+
+**🔍 When you see %%, it usually has one of these reasons:**
+- **Escaping a single % in string formatting:**
+    - In Python string formatting, %% means a literal %.
+    - Example:
+```bash
+	"Progress: 50%% complete"
+```
+
+- Output:
+```bash
+	Progress: 50% complete
+```
+
+- **In Django templates: You rarely need %%.**
+    - You would just write % in your HTML if needed.
+    - Example:
+```bash
 (html):
 <p>Discount: 10%</p>
+```
 
-Summary:
-•	Django project structure:
-o	Models define data
-o	Views handle logic
-o	Templates render HTML
-o	URLs route requests
-•	In templates:
-o	{% ... %} = control structures
-o	{{ ... }} = variable output
-o	%% = usually not used in Django templates—only in string formatting contexts.
+**Summary:**
+- Django project structure:
+    - **Models** define data
+    - **Views** handle logic
+    - **Templates** render HTML
+    - **URLs** route requests
 
+- In templates:
+    - **{% ... %}** = control structures
+    - **{{ ... }}** = variable output
+    - **%%** = usually not used in Django templates—only in string formatting contexts.
+---
 
-🎯 Data Flow Between an HTML Form and the Database in Django
+## 🎯 Data Flow Between an HTML Form and the Database in Django <br>
 Let’s break this down in 5 steps:
-1.	User Submits the Form (Frontend)
-•	The user fills out an HTML <form> in a template.
-•	When they click Submit, the browser sends an HTTP POST request to the Django server.
+
+**1.	User Submits the Form (Frontend)** 
+- The user fills out an HTML <form> in a template.
+- When they click Submit, the browser sends an HTTP POST request to the Django server.<br>
 Example HTML form:
+```bash
 <form method="post">
   {% csrf_token %}
   <input type="text" name="title">
   <textarea name="content"></textarea>
   <button type="submit">Save</button>
 </form>
-2.	Django URLconf Routes the Request
-•	Django URL dispatcher (urls.py) matches the POST request URL to a view function.
+```
+
+**2.	Django URLconf Routes the Request**
+- Django URL dispatcher (urls.py) matches the POST request URL to a view function.<br>
 Example urls.py:
+```bash
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('create/', views.create_article, name='create_article'),
 ]
-3.	View Function Processes the Request
-•	The view reads data from request.POST.
-•	Validates the data (manually or using Django Forms).
-•	If valid, saves it to the database via the Model.
+```
+**3.	View Function Processes the Request**
+- The view reads data from request.POST.
+- Validates the data (manually or using Django Forms).
+- If valid, saves it to the database via the Model.<br>
 Example views.py:
+```bash
 from django.shortcuts import render, redirect
 from .models import Article
 
@@ -389,18 +426,21 @@ def create_article(request):
         Article.objects.create(title=title, content=content)
         return redirect('article_list')
     return render(request, 'create_article.html')
+```
+**Alternative (Recommended): Use Django ModelForm for automatic validation and saving.**
 
-Alternative (Recommended): Use Django ModelForm for automatic validation and saving.
+**4.	Model Saves Data**
+- The Article.objects.create() call generates an INSERT SQL query.
+- Django ORM writes the data to the database table (e.g., wp_articles).
 
-4.	Model Saves Data
-•	The Article.objects.create() call generates an INSERT SQL query.
-•	Django ORM writes the data to the database table (e.g., wp_articles).
+**5.	Redirect or Render Response**
+- After saving, the view:
+    - Redirects the user to another page (Post/Redirect/Get pattern).
+    - Or renders a response (e.g., a success message).
 
-5.	Redirect or Render Response
-•	After saving, the view:
-o	Redirects the user to another page (Post/Redirect/Get pattern).
-o	Or renders a response (e.g., a success message).
-🎯 Summary of the Data Flow
+
+**🎯 Summary of the Data Flow** 
+```plaintext
 HTML Form (Template)
 ⭣ (submit)
 HTTP POST Request
@@ -412,12 +452,16 @@ View Function (processes & validates data)
 Model (saves to database)
 ⭣
 Redirect or Render Response
-✅ Pro Tip:
-When using Django Forms or ModelForms:
-•	They handle validation.
-•	They automatically clean data.
-•	They make saving simpler.
-Example with ModelForm:
+```
+
+**✅ Pro Tip:**<br>
+**When using Django Forms or ModelForms:**
+- They handle validation.
+- They automatically clean data.
+- They make saving simpler.
+
+**Example with ModelForm:**
+```bash
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST)
@@ -427,32 +471,44 @@ def create_article(request):
     else:
         form = ArticleForm()
     return render(request, 'create_article.html', {'form': form})
+```
+---
+## 🛠️ Essential Django Tools and Commands for CRUD
+**🚀 Project & App Creation**
+| **Tool/Command**                              | **Purpose**                                                                                  |
+|-----------------------------------------------|----------------------------------------------------------------------------------------------|
+| `django-admin startproject <projectname>`     | Creates a new Django project folder with settings and initial files.                        |
+| `python manage.py startapp <appname>`         | Creates a new Django app (a self-contained module for your models, views, etc.).            |
+
+<br>
+
+**🗃️ Database Schema Management** 
+| **Tool/Command**                           | **Purpose**                                                                           |
+|--------------------------------------------|---------------------------------------------------------------------------------------|
+| `python manage.py makemigrations`          | Generates migration files to record model changes (e.g., adding fields).             |
+| `python manage.py migrate`                 | Applies the migrations to create or update database tables.                          |
+
+<br>
+
+**⚙️ Running the Server**
+
+| **Tool/Command**                   | **Purpose**                                                                 |
+|------------------------------------|-----------------------------------------------------------------------------|
+| `python manage.py runserver`       | Starts the development web server so you can test your app locally.        |
+
+<br>
+
+**📝 Model Handling** 
+
+| **Tool/Feature**           | **Purpose**                                                                                      |
+|----------------------------|--------------------------------------------------------------------------------------------------|
+| `Models (models.py)`       | Define your database schema (tables and fields).                                                |
+| `ModelForm`                | A Django class to automatically generate forms from your models, including validation and saving. |
 
 
-🛠️ Essential Django Tools and Commands for CRUD
-🚀 Project & App Creation
-Tool/Command	Purpose
-django-admin startproject <projectname>	Creates a new Django project folder with settings and initial files.
-python manage.py startapp <appname>	Creates a new Django app (a self-contained module for your models, views, etc.).
 
-🗃️ Database Schema Management
-Tool/Command	Purpose
-python manage.py makemigrations	Generates migration files to record model changes (e.g., adding fields).
-python manage.py migrate	Applies the migrations to create or update database tables.
-
-
-
-
-⚙️ Running the Server
-Tool/Command	Purpose
-python manage.py runserver	Starts the development web server so you can test your app locally.
-
-📝 Model Handling
-Tool/Feature	Purpose
-Models (models.py)	Define your database schema (tables and fields).
-ModelForm	A Django class to automatically generate forms from your models, including validation and saving.
-
-Example ModelForm usage:
+**Example ModelForm usage:**
+```bash
 from django.forms import ModelForm
 from .models import Article
 
@@ -460,55 +516,83 @@ class ArticleForm(ModelForm):
     class Meta:
         model = Article
         fields = ['title', 'content']
+```
+
 This allows you to easily create/update objects in the DB.
+<br>
 
-🛡️ Admin Interface
-Tool/Feature	Purpose
-django.contrib.admin	The Django Admin—a built-in web interface to manage (CRUD) all your models without extra code.
-python manage.py createsuperuser	Creates a superuser account so you can log into the admin.
- With the admin, you can:
-•	Create, edit, delete records.
-•	View all entries in a table.
-•	Search/filter.
+---
 
-🧭 Other Helpful Commands
-Tool/Command	Purpose
-python manage.py shell	Opens a Python shell preloaded with your Django project context (models, settings). Great for testing code interactively.
-python manage.py showmigrations	Shows which migrations exist and which have been applied.
-python manage.py makemessages / compilemessages	For translation (i18n). Less directly related to CRUD, but useful if localizing forms/admin.
+## 🛡️ Admin Interface
+<br>
 
-🟢 Quick Example Workflow: CRUD Development in Django
+
+| **Tool/Feature**                          | **Purpose**                                                                                         |
+|-------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| `django.contrib.admin`                    | The Django Admin—a built-in web interface to manage (CRUD) all your models without extra code.     |
+| `python manage.py createsuperuser`        | Creates a superuser account so you can log into the admin.                                         |
+
+**With the admin, you can:**
+- Create, edit, delete records.
+- View all entries in a table.
+- Search/filter.
+
+**🧭 Other Helpful Commands** 
+
+| **Tool/Command**                                       | **Purpose**                                                                                                           |
+|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `python manage.py shell`                               | Opens a Python shell preloaded with your Django project context (models, settings). Great for testing code interactively. |
+| `python manage.py showmigrations`                      | Shows which migrations exist and which have been applied.                                                             |
+| `python manage.py makemessages` / `compilemessages`   | For translation (i18n). Less directly related to CRUD, but useful if localizing forms/admin.                          |
+
+<br>
+
+**🟢 Quick Example Workflow: CRUD Development in Django**
+
 1.	Create a Project & App
+
+```bash
 django-admin startproject myproject
 cd myproject
 python manage.py startapp blog
+```
 
-2.	Define a Model
-# blog/models.py
+2.	Define a Model <br> 
+blog/models.py
+```bash
 from django.db import models
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-3.	Make Migrations & Migrate
+```
+
+3.	Make Migrations & Migrate <br> 
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
-4.	Register in Admin
-# blog/admin.py
+4.	Register in Admin <br>
+
+blog/admin.py
+```bash
 from django.contrib import admin
 from .models import Post
 
 admin.site.register(Post)
+```
 
-
-5.	Create Superuser & Start Server
+5.	Create Superuser & Start Server <br>
+```bash
 python manage.py createsuperuser
 python manage.py runserver
+```
 Visit /admin to create/edit/delete Posts.
 
-6.	Use ModelForm in Views
-# blog/forms.py
+6.	Use ModelForm in Views <br>
+blog/forms.py
+```bash
 from django.forms import ModelForm
 from .models import Post
 
@@ -516,18 +600,23 @@ class PostForm(ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
+```
 
+7.	Map URLs & Create Views <br>
 
-7.	Map URLs & Create Views
-# blog/urls.py
+ blog/urls.py
+
+ ```bash
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('new/', views.create_post, name='create_post'),
 ]
+```
 
-# blog/views.py
+blog/views.py
+```bash
 from django.shortcuts import render, redirect
 from .forms import PostForm
 
@@ -540,86 +629,109 @@ def create_post(request):
     else:
         form = PostForm()
     return render(request, 'create_post.html', {'form': form})
+```
 
+**Recap of Main Tools:**
+- startproject / startapp → create structure
+- makemigrations / migrate → manage DB
+- runserver → test app
+- ModelForm → build forms easily
+- admin → manage data via UI
+---
 
-Recap of Main Tools:
-•	startproject / startapp → create structure
-•	makemigrations / migrate → manage DB
-•	runserver → test app
-•	ModelForm → build forms easily
-•	admin → manage data via UI
+## 🎯 What is Django Admin?
 
-🎯 What is Django Admin?
 ✅ Django Admin is a powerful, built-in web interface that lets you manage (CRUD) your models’ data without having to code custom pages.
 Think of it as your project’s “control panel.”
 
-🛠️ How Does Django Admin Work?
+**🛠️ How Does Django Admin Work?**
+
 1.	 It Reads Your Models
-•	You define your models in models.py (e.g., Post, Article).
-•	Django Admin automatically generates forms and tables to create, update, list, and delete records.
+    - You define your models in models.py (e.g., Post, Article).
+    - Django Admin automatically generates forms and tables to create, update, list, and delete records.
 
 2.	It Uses Model Registration
-•	To show a model in Admin, you register it in admin.py.
-✅ Example:
+    - To show a model in Admin, you register it in admin.py.
+
+**Example:**
+```bash
 from django.contrib import admin
 from .models import Post
-
+```
 admin.site.register(Post)
-This tells Django Admin to display Post in the interface.
+This tells Django Admin to display Post in the interface.<br>
 
-3.	It Provides CRUD Interface
+3.	It Provides CRUD Interface <br>
 Once registered, you can:
-•	Create new records
-•	Read and list all records
-•	Update existing records
-•	Delete records
-All via a clean web UI at:
-http://localhost:8000/admin/
+- Create new records
+- Read and list all records
+- Update existing records
+- Delete records
+<br>
 
-4.	Authentication & Permissions
-•	Only authenticated users (staff or superusers) can log in.
-•	You can assign permissions per user or group:
-o	Can add?
-o	Can change?
-o	Can delete?
-o	Can view?
-✅ Create a superuser:
+    All via a clean web UI at: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+
+
+4.	Authentication & Permissions <br>
+- Only authenticated users (staff or superusers) can log in.
+- You can assign permissions per user or group:
+    - Can add?
+    - Can change?
+    - Can delete?
+    - Can view?
+- ✅ Create a superuser:
+```bash
 python manage.py createsuperuser
+```
 Then log in with that account.
 
 5.	Customization
-You can customize how models appear by creating ModelAdmin classes.
-✅ Example:
+    You can customize how models appear by creating ModelAdmin classes.
+    Example:
+```bash
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at')
     search_fields = ('title',)
 
 admin.site.register(Post, PostAdmin)
-
-
+```
 This:
-•	Shows title and created_at columns in the list view.
-•	Adds a search box for the title field.
+- Shows title and created_at columns in the list view.
+- Adds a search box for the title field.
 
-
-🖥️ Admin Workflow Overview
-Here’s a step-by-step flow:
+**🖥️ Admin Workflow Overview** <br>
+Here’s a step-by-step flow:<br>
 1.	Define your model
+```bash
 class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-2.	Register model in admin
-admin.site.register(Post)
-3.	Create superuser
-python manage.py createsuperuser
-4.	Start the server
-python manage.py runserver
-5.	Log in at /admin/
-o	Use your superuser credentials.
-o	You’ll see the Post model ready to manage.
+```
 
-✨ Why is Django Admin Powerful?
-✅ Saves tons of development time: you get a full CRUD UI instantly.
-✅ Secure by default (only staff can access).
-✅ Customizable per project needs.
-✅ Ideal for internal back-office dashboards or managing site content.
+2.	Register model in admin
+```bash
+admin.site.register(Post)
+```
+
+3.	Create superuser
+```bash
+python manage.py createsuperuser
+```
+
+4.	Start the server
+```bash
+python manage.py runserver
+```
+
+5.	Log in at /admin/: 
+- Use your superuser credentials.
+- You’ll see the Post model ready to manage. <br> 
+<br> 
+
+
+## ✨ Why is Django Admin Powerful?** <br>
+
+✅ Saves tons of development time: you get a full CRUD UI instantly. <br> 
+✅ Secure by default (only staff can access). <br> 
+✅ Customizable per project needs. <br> 
+✅ Ideal for internal back-office dashboards or managing site content. <br> 
